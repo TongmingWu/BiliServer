@@ -34,3 +34,10 @@ class BaseHandler(object):
                 'data': data,
             }
         })
+
+    # 错误
+    def write_error(self, code=502, message='获取失败'):
+        return self.write_json({
+            'code': code,
+            'message': message
+        })
