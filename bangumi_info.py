@@ -14,10 +14,13 @@ class Info(object):
         }
         res = requests.get(url, params=params)
         if 304 >= res.status_code >= 200:
-            result = json.loads(res.text.replace('seasonListCallback(', '').replace('});', '}'))['result']
-            recommend_bangumi = self.__get_recommend_bangumi()
-            result['recommend_bangumi'] = recommend_bangumi
-            return BaseHandler().write_object(code=200, message='获取成功', result=result)
+            try:
+                result = json.loads(res.text.replace('seasonListCallback(', '').replace('});', '}'))['result']
+                recommend_bangumi = self.__get_recommend_bangumi()
+                result['recommend_bangumi'] = recommend_bangumi
+                return BaseHandler().write_object(code=200, message='获取成功', result=result)
+            except KeyError:
+                return BaseHandler().write_error(400, '协议错误')
         return BaseHandler().write_error()
 
     def __get_recommend_bangumi(self):

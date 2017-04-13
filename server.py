@@ -64,7 +64,13 @@ def search():
     word = request.args.get('word')
     if not word:
         return BaseHandler().write_error(404, '关键字不能为空')
-    return Search(word).search()
+    try:
+        int(request.args.get('page'))
+        page = int(request.args.get('page'))
+        order = request.args.get('order')
+        return Search(word=word, page=page, order=order).search()
+    except ValueError:
+        return BaseHandler().write_error(400, '协议错误')
 
 
 # 初始化logging

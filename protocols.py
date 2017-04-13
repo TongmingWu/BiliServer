@@ -23,7 +23,7 @@ class BaseHandler(object):
         })
 
     # 列表
-    def write_list(self, code=200, message='获取成功', count=0, data=None):
+    def write_list(self, code=200, message='获取成功', count=0, page=1, data=None):
         if data is None:
             data = []
         return self.write_json({
@@ -32,6 +32,7 @@ class BaseHandler(object):
             'result': {
                 'count': count,
                 'data': data,
+                'page': page,
             }
         })
 

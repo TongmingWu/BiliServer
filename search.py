@@ -7,19 +7,23 @@ import re
 # 搜索推荐字 http://www.bilibili.com/widget/getSearchDefaultWords
 
 class Search(object):
-    def __init__(self, word=None):
+    def __init__(self, word=None, page=1, order='totalrank'):
         self.word = word
+        self.page = page
+        self.order = order
 
     def search(self):
         url = 'http://search.bilibili.com/all'
         params = {
-            'keyword': self.word
+            'keyword': self.word,
+            'page': self.page,
+            'order': self.order
         }
         res = requests.get(url=url, params=params)
         if 304 >= res.status_code >= 200:
             try:
                 data = self.__filter(res.text)
-                return BaseHandler().write_list(count=len(data), data=data)
+                return BaseHandler().write_list(count=len(data), page=self.page, data=data)
             except KeyError or IndexError:
                 return BaseHandler().write_error()
         return BaseHandler().write_error()
