@@ -1,5 +1,6 @@
 from protocols import BaseHandler
 import requests
+from app.banner import Banner
 
 
 class Home(object):
@@ -10,16 +11,19 @@ class Home(object):
     def get_data(self):
         res = requests.get(url=self.url)
         if 304 >= res.status_code >= 200:
-            return self.__filter(res.json())
+            results = self.__filter(res.json())
+            banner_list = Banner().get_banner()
+            results['banner'] = banner_list
+            return BaseHandler().write_object(200, '获取成功', results)
         return BaseHandler().write_list(502, '获取失败')
 
     def __filter(self, json_data):
         category_list = {}
         for category in json_data:
-            if category == 'list' or category == 'results' or category == 'pages':
+            if category in ['list', 'results', 'pages']:
                 continue
             inner_list = []
             for item in json_data[category]:
                 inner_list.append(json_data[category][item])
             category_list[category] = inner_list
-        return BaseHandler().write_object(200, '获取成功', category_list)
+        return category_list

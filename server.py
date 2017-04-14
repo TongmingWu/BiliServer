@@ -25,9 +25,9 @@ def get_home():
 
 
 # banner接口
-@app.route('/api/v1/banner/', methods=['GET'])
-def get_banner():
-    return Banner().get_banner()
+# @app.route('/api/v1/banner/', methods=['GET'])
+# def get_banner():
+#     return Banner().get_banner()
 
 
 # 首页live接口
@@ -56,10 +56,17 @@ def get_bangumi_info(sid):
 
 # 视频分类
 # param ftid 外层分类 如动画
+@app.route('/api/v1/category/<first_tid>/', methods=['GET'])
+def get_first_category_video(first_tid):
+    return Category(first_tid=first_tid).get_category_video()
+
+
+# 视频分类
+# param ftid 外层分类 如动画
 # param stid 内层分类 如动画中的MAD
 @app.route('/api/v1/category/<first_tid>/<second_tid>/', methods=['GET'])
-def get_category_video(first_tid, second_tid):
-    return
+def get_second_category_video(first_tid, second_tid):
+    return Category(first_tid=first_tid, second_tid=second_tid).get_category_video()
 
 
 # 获取分类表

@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from protocols import BaseHandler
 import json
 import re
-import logging
+from app.category import Category
 
 appkey = 'f3bb208b3d081dc8'
 SECRETKEY_MINILOADER = '1c15888dc316e05a15fdd0a02ed6584f'
