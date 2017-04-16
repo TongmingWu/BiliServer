@@ -27,13 +27,18 @@ class Category(object):
                 for second_item in first_item:
                     if self.second_tid == second_item:
                         url = category_table[first_item][second_item]
-                        return self.__get_data(url=url)
+                        return self.__get_second_data(url=url)
         # 匹配不到第二层分类的情况,有可能为空或没有这个分类
         return BaseHandler().write_error()
 
     # 获取一级分类的数据
     def __get_first_data(self, url):
-        # 有banner
+        # 有banner | recommend 4 | 各个二级分类 12
+        '''
+        一级分类中的各个二级分类接口:http://api.bilibili.com/typedynamic/region
+        参数: rid --> 二级分类id | pn --> page num | ps --> 当月第几天
+        建两张表
+        '''
         result = {}
         res = requests.get(url)
         if 304 >= res.status_code >= 200:
@@ -48,7 +53,7 @@ class Category(object):
         return BaseHandler().write_error()
 
     # 根据url获取二级分类的数据
-    def __get_data(self, url):
+    def __get_second_data(self, url):
         res = requests.get(url)
         if 304 >= res.status_code >= 200:
             try:
