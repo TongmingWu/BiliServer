@@ -49,6 +49,10 @@ class Page(object):
             for item in soup.select('.tminfo > span'):
                 category = item.select('a')[0].string
                 category_url = 'http://www.bilibili.com%s' % item.select('a')[0]['href']
+
+            # 相关视频
+            # TODO 相关视频获取
+            relative_list = []
             result['author_info'] = author_info
             result['play_info'] = play_info
             result['title'] = title
@@ -59,6 +63,7 @@ class Page(object):
             result['video_info'] = video_url_info
             result['category'] = category
             result['category_url'] = category_url
+            result['relative_list'] = relative_list
         except IndexError and KeyError:  # 网页改版的情况
             return BaseHandler().write_error()
         return BaseHandler().write_object(code=200, message='获取成功', result=result)

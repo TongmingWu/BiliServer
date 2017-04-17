@@ -2,12 +2,12 @@ import logging
 
 from app.bangumi import Bangumi
 from app.bangumi_info import Info
-from app.banner import Banner
 from flask import Flask, request
 from flask_script import Manager
 from app.home import Home
 from app.video_page import Page
 from app.category import Category
+from app.guochuang import Guochuang
 
 from app.live import Live
 from app.search import Search
@@ -48,6 +48,12 @@ def get_bangumi():
     return Bangumi().get_data()
 
 
+# 获取国创时间表
+@app.route('/api/v1/guochuang/', methods=['GET'])
+def get_guochuang():
+    return Guochuang().get_data()
+
+
 # 番剧具体信息
 @app.route('/api/v1/bangumi/<sid>/', methods=['GET'])
 def get_bangumi_info(sid):
@@ -82,7 +88,6 @@ def search():
     if not word:
         return BaseHandler().write_error(404, '关键字不能为空')
     try:
-        int(request.args.get('page'))
         page = int(request.args.get('page'))
         order = request.args.get('order')
         return Search(word=word, page=page, order=order).search()
