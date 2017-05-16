@@ -1,5 +1,7 @@
 import requests
 
+'''获取banner数据'''
+
 
 class Banner(object):
     def __init__(self, bid=23):

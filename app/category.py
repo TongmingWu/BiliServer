@@ -115,19 +115,23 @@ class Category(object):
 
     # 获取分类表
     def get_category(self):
-        category = {}
         url = 'http://www.bilibili.com'
         res = requests.get(url)
         if 304 >= res.status_code >= 200:
             soup = BeautifulSoup(res.text, 'lxml')
+            data = []
             for item in soup.select('.nav-menu > li'):
-                first_type = {}
+                child = []
                 for i_item in item.select('.i_num > li'):
                     title = i_item.select('a > b')[0].get_text()
                     url = i_item.select('a')[0]['href']
-                    first_type[title] = 'http:' + url if url.startswith('//') else url
+                    url = 'http:' + url if url.startswith('//') else url
+                    L = dict([('second_name', title), ('second_url', url)])
+                    child.append(L)
                 first_url = item.select('a')[0]['href']
-                first_type['normal'] = 'http:' + first_url if first_url.startswith('//') else first_url
-                category[item.select('em')[0].get_text()] = first_type
-            return json.dumps(category)
+                first_url = 'http:' + first_url if first_url.startswith('//') else first_url
+                first_name = item.select('em')[0].get_text()
+                L = dict([('first_name', first_name), ('first_url', first_url), ('child', child)])
+                data.append(L)
+            return BaseHandler().write_object(result={'data': data})
         return BaseHandler().write_error()

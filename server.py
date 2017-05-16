@@ -24,12 +24,6 @@ def get_home():
     return Home().get_data()
 
 
-# banner接口
-# @app.route('/api/v1/banner/', methods=['GET'])
-# def get_banner():
-#     return Banner().get_banner()
-
-
 # 首页live接口
 @app.route('/api/v1/live/recom/', methods=['GET'])
 def get_live_recom():
@@ -94,6 +88,11 @@ def search():
     except ValueError:
         return BaseHandler().write_error(400, '协议错误')
 
+
+# banner接口
+# @app.route('/api/v1/banner/', methods=['GET'])
+# def get_banner():
+#     return Banner().get_banner()
 
 # 初始化logging
 def init_log():
