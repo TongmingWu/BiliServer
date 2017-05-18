@@ -1,3 +1,5 @@
+import random
+
 from protocols import BaseHandler
 import requests
 from app.banner import Banner
@@ -19,11 +21,12 @@ class Home(object):
 
     def __filter(self, json_data):
         category_list = {}
+        inner_list = []
         for category in json_data:
             if category in ['list', 'results', 'pages']:
                 continue
-            inner_list = []
             for item in json_data[category]:
                 inner_list.append(json_data[category][item])
-            category_list[category] = inner_list
+        # todo 做成分页推荐
+        category_list['video_list'] = random.sample(inner_list, 20)
         return category_list

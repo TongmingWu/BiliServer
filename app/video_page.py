@@ -19,13 +19,16 @@ class Page(object):
     # 获取视频信息
     def get_data(self):
         url = 'http://www.bilibili.com/video/av%s/' % self.aid
-        res = requests.get(url)
-        if 304 >= res.status_code >= 200:
-            return self.__filter(res.text)
+        res = requests.get(url, allow_redirects=True)
+        history = res.history
+        if len(history) == 0:
+            return self.__filter_normal_video(res.text)
+        elif len(history) > 0:  # 出现重定向
+            return self.__filter_bangumi_video(res.text)
         return BaseHandler().write_error()
 
-    # 清洗数据
-    def __filter(self, data):
+    # 清洗普通视频数据
+    def __filter_normal_video(self, data):
         result = {}
         soup = BeautifulSoup(data, 'lxml')
         try:
@@ -64,8 +67,14 @@ class Page(object):
             result['category'] = category
             result['category_url'] = category_url
             result['relative_list'] = relative_list
-        except IndexError and KeyError:  # 网页改版的情况
+        except IndexError or KeyError:  # 网页改版的情况
             return BaseHandler().write_error()
+        return BaseHandler().write_object(code=200, message='获取成功', result=result)
+
+    # 清洗番剧视频数据
+    def __filter_bangumi_video(self, data):
+        # todo 获取番剧视频详情信息
+        result = {}
         return BaseHandler().write_object(code=200, message='获取成功', result=result)
 
     # 获取作者信息
