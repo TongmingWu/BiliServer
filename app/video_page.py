@@ -46,7 +46,7 @@ class Page(object):
             if re_findall:
                 cid = re_findall[0]  # 获取视频真正链接 - 弹幕 的重要参数
             video_url_info = self.__get_video_url(cid)
-            create_time = soup.select('time')[0]['datetime']
+            create_time = str(soup.select('time')[0]['datetime']).replace('T', ' ')
             category = None
             category_url = None
             for item in soup.select('.tminfo > span'):
@@ -55,7 +55,7 @@ class Page(object):
 
             # 相关视频
             # TODO 相关视频获取
-            relative_list = []
+            relative_list = self.__get_relative_video()
             result['author_info'] = author_info
             result['play_info'] = play_info
             result['title'] = title
@@ -124,3 +124,13 @@ class Page(object):
             video_download_info['length'] = length
             video_download_info['url_list'] = url_list
         return video_download_info
+
+    # 获取相关视频
+    def __get_relative_video(self):
+        result_list = []
+        url = 'http://comment.bilibili.com/recommendnew,{aid}'.format(aid=self.aid)
+        res = requests.get(url)
+        if 304 >= res.status_code >= 200:
+            print(res.json()['data'])
+            result_list = res.json()['data']
+        return result_list

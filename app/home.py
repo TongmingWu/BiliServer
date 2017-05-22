@@ -23,10 +23,15 @@ class Home(object):
         category_list = {}
         inner_list = []
         for category in json_data:
-            if category in ['list', 'results', 'pages']:
+            if category in ['list', 'results', 'pages', 'code']:
                 continue
             for item in json_data[category]:
-                inner_list.append(json_data[category][item])
+                tags = []
+                if json_data[category][item]['tags'] is not None:
+                    for tag in json_data[category][item]['tags']:
+                        tags.append(json_data[category][item]['tags'][tag])
+                    json_data[category][item]['tags'] = tags
+                    inner_list.append(json_data[category][item])
         # todo 做成分页推荐
         category_list['video_list'] = random.sample(inner_list, 20)
         return category_list
