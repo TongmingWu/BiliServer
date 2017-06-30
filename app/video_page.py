@@ -54,7 +54,6 @@ class Page(object):
                 category_url = 'http://www.bilibili.com%s' % item.select('a')[0]['href']
 
             # 相关视频
-            # TODO 相关视频获取
             relative_list = self.__get_relative_video()
             result['author_info'] = author_info
             result['play_info'] = play_info
@@ -131,6 +130,5 @@ class Page(object):
         url = 'http://comment.bilibili.com/recommendnew,{aid}'.format(aid=self.aid)
         res = requests.get(url)
         if 304 >= res.status_code >= 200:
-            print(res.json()['data'])
             result_list = res.json()['data']
         return result_list

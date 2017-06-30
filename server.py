@@ -1,14 +1,15 @@
 import logging
+import time
 
+from flask_error import FlaskError
 from app.bangumi import Bangumi
 from app.bangumi_info import Info
-from flask import Flask, request
+from flask import Flask, request, Response
 from flask_script import Manager
 from app.home import Home
 from app.video_page import Page
 from app.category import Category
 from app.guochuang import Guochuang
-
 from app.live import Live
 from app.search import Search
 from protocols import BaseHandler
@@ -34,6 +35,12 @@ def get_live_recom():
 @app.route('/api/v1/video/av<aid>/', methods=['GET'])
 def get_video_info(aid):
     return Page(aid).get_data()
+
+
+# 获取番剧推荐
+@app.route('/api/v1/bangumi/recom/', methods=['GET'])
+def get_bangumi_rec():
+    return
 
 
 # 番剧时间表
@@ -80,7 +87,7 @@ def get_category():
 def search():
     word = request.args.get('word')
     if not word:
-        return BaseHandler().write_error(404, '关键字不能为空')
+        return BaseHandler().write_error(500, '关键字不能为空')
     try:
         page = int(request.args.get('page'))
         order = request.args.get('order')
@@ -89,10 +96,18 @@ def search():
         return BaseHandler().write_error(400, '协议错误')
 
 
-# banner接口
-# @app.route('/api/v1/banner/', methods=['GET'])
-# def get_banner():
-#     return Banner().get_banner()
+# cookies测试
+@app.route('/api/v1/cookies')
+def get_cookies():
+    res = Response('add cookies')
+    res.set_cookie(key='name', value='tongming', expires=time.time() + 6 * 60)
+    return res
+
+
+@app.errorhandler(FlaskError)
+def handle_error(error_json):
+    return error_json
+
 
 # 初始化logging
 def init_log():
