@@ -1,6 +1,7 @@
 import requests
 from protocols import BaseHandler
 import json
+import const
 
 
 # 首页直播数据
@@ -22,4 +23,4 @@ class Live(object):
     def __filter(self, json_data):
         json_data = str(json_data).replace('callback(', '').replace('});', '}')
         json_data = json.loads(json_data)['data']['recommend']
-        return BaseHandler().write_list(200, '获取成功', len(json_data), json_data)
+        return BaseHandler().write_list(const.SUCCESS_CODE, const.SUCCESS_MESSAGE, len(json_data), json_data)

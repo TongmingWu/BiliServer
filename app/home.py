@@ -3,6 +3,7 @@ import random
 from protocols import BaseHandler
 import requests
 from app.banner import Banner
+import const
 
 
 class Home(object):
@@ -16,8 +17,8 @@ class Home(object):
             results = self.__filter(res.json())
             banner_list = Banner().get_banner()
             results['banner'] = banner_list
-            return BaseHandler().write_object(200, '获取成功', results)
-        return BaseHandler().write_list(502, '获取失败')
+            return BaseHandler().write_object(const.SUCCESS_CODE, const.SUCCESS_MESSAGE, results)
+        return BaseHandler().write_list(const.FAIL_CODE, const.FAIL_MESSAGE)
 
     def __filter(self, json_data):
         category_list = {}
@@ -31,7 +32,10 @@ class Home(object):
                     for tag in json_data[category][item]['tags']:
                         tags.append(json_data[category][item]['tags'][tag])
                     json_data[category][item]['tags'] = tags
-                    inner_list.append(json_data[category][item])
+                inner_list.append(json_data[category][item])
         # todo 做成分页推荐
-        category_list['video_list'] = random.sample(inner_list, 20)
+        if len(inner_list) > 20:
+            category_list['video_list'] = random.sample(inner_list, 20)
+        else:
+            category_list['video_list'] = inner_list
         return category_list

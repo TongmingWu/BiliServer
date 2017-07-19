@@ -1,6 +1,7 @@
 import requests
 from protocols import BaseHandler
 import json
+import const
 
 
 # 获取番剧时间表
@@ -14,7 +15,7 @@ class Bangumi(object):
         if 304 >= res.status_code >= 200:
             data = json.loads(res.text)['result']
             count = len(data)
-            return BaseHandler().write_list(code=200, message='获取成功', count=count, data=data)
+            return BaseHandler().write_list(code=const.SUCCESS_CODE, message=const.SUCCESS_MESSAGE, count=count, data=data)
         return BaseHandler().write_error()
 
     # 获取今日更新

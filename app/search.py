@@ -8,6 +8,10 @@ import re
 
 class Search(object):
     def __init__(self, word=None, page=1, order='totalrank'):
+        if page is None:
+            page = 1
+        if word is None:
+            word = ''
         self.word = word
         self.page = page
         self.order = order      # 排列方式

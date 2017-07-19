@@ -1,0 +1,9 @@
+'''常量池'''
+
+SUCCESS_MESSAGE = '获取成功'
+FAIL_MESSAGE = '获取失败'
+KEYWORD_NONE_MESSAGE = '关键字不能为空'
+PARAM_ERROR_MESSAGE = '无效参数'
+
+SUCCESS_CODE = 0
+FAIL_CODE = 1000

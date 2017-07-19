@@ -1,6 +1,7 @@
 import requests
 from protocols import BaseHandler
 import json
+import const
 
 
 class Info(object):
@@ -18,7 +19,7 @@ class Info(object):
                 result = json.loads(res.text.replace('seasonListCallback(', '').replace('});', '}'))['result']
                 recommend_bangumi = self.__get_recommend_bangumi()
                 result['recommend_bangumi'] = recommend_bangumi
-                return BaseHandler().write_object(code=200, message='获取成功', result=result)
+                return BaseHandler().write_object(code=const.SUCCESS_CODE, message=const.SUCCESS_MESSAGE, result=result)
             except KeyError:
                 return BaseHandler().write_error(400, '协议错误')
         return BaseHandler().write_error()

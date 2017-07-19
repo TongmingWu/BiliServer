@@ -1,5 +1,6 @@
 import logging
 import time
+import const
 
 from flask_error import FlaskError
 from app.bangumi import Bangumi
@@ -87,13 +88,12 @@ def get_category():
 def search():
     word = request.args.get('word')
     if not word:
-        return BaseHandler().write_error(500, '关键字不能为空')
+        return BaseHandler().write_error(const.FAIL_CODE, const.KEYWORD_NONE_MESSAGE)
     try:
-        page = int(request.args.get('page'))
-        order = request.args.get('order')
-        return Search(word=word, page=page, order=order).search()
-    except ValueError:
-        return BaseHandler().write_error(400, '协议错误')
+        page = request.args.get('page')
+        return Search(word=word, page=page).search()
+    except Exception:
+        return BaseHandler().write_error(const.FAIL_CODE, const.FAIL_CODE)
 
 
 # cookies测试

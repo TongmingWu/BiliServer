@@ -1,6 +1,7 @@
 import requests
 from protocols import BaseHandler
 import json
+import const
 
 
 # 获取国产动画时间表
@@ -12,5 +13,5 @@ class Guochuang(object):
             # loads = json.loads(res.text.replace('gc_timeline(', '').replace('});', '}'))
             data = json.loads(res.text)['result']
             count = len(data)
-            return BaseHandler().write_list(code=200, message='获取成功', count=count, data=data)
+            return BaseHandler().write_list(code=const.SUCCESS_CODE, message='获取成功', count=count, data=data)
         return BaseHandler().write_error()

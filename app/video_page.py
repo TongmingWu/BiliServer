@@ -6,6 +6,7 @@ from protocols import BaseHandler
 import json
 import re
 from app.category import Category
+import const
 
 appkey = 'f3bb208b3d081dc8'
 SECRETKEY_MINILOADER = '1c15888dc316e05a15fdd0a02ed6584f'
@@ -68,13 +69,13 @@ class Page(object):
             result['relative_list'] = relative_list
         except IndexError or KeyError:  # 网页改版的情况
             return BaseHandler().write_error()
-        return BaseHandler().write_object(code=200, message='获取成功', result=result)
+        return BaseHandler().write_object(code=const.SUCCESS_CODE, message=const.SUCCESS_MESSAGE, result=result)
 
     # 清洗番剧视频数据
     def __filter_bangumi_video(self, data):
         # todo 获取番剧视频详情信息
         result = {}
-        return BaseHandler().write_object(code=200, message='获取成功', result=result)
+        return BaseHandler().write_object(code=const.SUCCESS_CODE, message=const.SUCCESS_MESSAGE, result=result)
 
     # 获取作者信息
     def __get_author_info(self, mid=0):
