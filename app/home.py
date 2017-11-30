@@ -27,11 +27,6 @@ class Home(object):
             if category in ['list', 'results', 'pages', 'code']:
                 continue
             for item in json_data[category]:
-                tags = []
-                if json_data[category][item]['tags'] is not None:
-                    for tag in json_data[category][item]['tags']:
-                        tags.append(json_data[category][item]['tags'][tag])
-                    json_data[category][item]['tags'] = tags
                 inner_list.append(json_data[category][item])
         # todo 做成分页推荐
         if len(inner_list) > 20:
